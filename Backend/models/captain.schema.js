@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const bcrypt = require('bcrypt');
 
-const userSchema = new mongoose.Schema({
+const captainSchema = new mongoose.Schema({
     fullName: {
         firstName: {
             type: String,
@@ -12,20 +11,56 @@ const userSchema = new mongoose.Schema({
         },
         lastName: {
             type: String,
-            // length
+            required: true,
+            minLength: [3, "lastName must be at least 3 characters long"]
         }
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
         required: true,
-        select: false
+        select: false,
     },
     socketId: {
-        type: String
+        type: String,
+    },
+    status: {
+        type: String,
+        enum: ["active", "inactive"],
+        default: "inactive"
+    },
+    vehicle: {
+        color: {
+            type: String,
+            required: true
+        },
+        plate: {
+            type: String,
+            required: true,
+            minLength: [3, "Plate no must be at least 3 characters long"]
+        },
+        capacity: {
+            type: Number,
+            required: true,
+            minLength: [1, "Capacity must be at least 1 "]
+        },
+        vehicleType: {
+            type: String,
+            required: true,
+            enum: ['car', 'motorcycle', 'auto']
+        },
+        location: {
+            lat: {
+                type: Number
+            },
+            lng: {
+                type: Number
+            }
+        }
     }
 });
 
@@ -54,4 +89,4 @@ userSchema.methods.comparePassword = async function (password) {
     return await bcrypt.compare(password, this.password)
 };
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Captain', captainSchema)

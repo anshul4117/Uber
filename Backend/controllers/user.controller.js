@@ -1,4 +1,5 @@
 const User = require('../models/user.schema');
+const blackList = require('../models/blackListToken.schema')
 const userService = require('../services/user.service');
 const { validateRegisterData, validateLoginData } = require('../utils/validation');
 
@@ -74,8 +75,24 @@ const userProfile = async (req, res) => {
     }
 }
 
+const logoutUser = async (req, res) => {
+    try {
+        res.clearCookie('token');
+        const token = req.cookies.token || req.header('Authorization')?.replace('Bearer ', '');
+        await blackList.create({ token });
+        res.status(200).json({
+            message: 'User logged out successfully',
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: "Error : " + error.message
+        })
+    }
+}
+
 module.exports = {
     registerUser,
     loginUser,
-    userProfile
+    userProfile,
+    logoutUser
 }

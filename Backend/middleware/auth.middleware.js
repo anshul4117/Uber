@@ -4,10 +4,14 @@ require('dotenv').config();
 
 module.exports.authUser = async (req, res, next) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
+        const token = req.cookies.token || req.header('Authorization')?.replace('Bearer ', '');
         // const { token } = req.cookies;
         if (!token) {
             throw new Error("You are not login ")
+        }
+        const isBlackListed = await User.findOne({ token: token });
+        if (isBlackListed) {
+            throw new Error("Unauthorized")
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log(decoded)
