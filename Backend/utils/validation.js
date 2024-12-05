@@ -51,8 +51,18 @@ const validateRegisterCaptainData = (req) => {
     }
 }
 
+const validateCaptainLoginData = (req) => {
+    const { email, password } = req.body;
+    if (!validator.isEmail(email)) {
+        throw new Error('Email is not valid');
+    } else if (!validator.isStrongPassword(password)) {
+        throw new Error('Password is not Strong');
+    }
+}
+
 module.exports = {
     validateRegisterData,
     validateLoginData,
-    validateRegisterCaptainData
+    validateRegisterCaptainData,
+    validateCaptainLoginData
 }
