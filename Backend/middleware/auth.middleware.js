@@ -45,7 +45,7 @@ module.exports.authCaptain = async (req, res, next) => {
         if (!captain) {
             throw new Error('User not found and Authorized');
         }
-        req.user = captain;
+        req.captain = captain;
         next();
 
     } catch (error) {

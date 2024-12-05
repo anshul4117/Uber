@@ -63,9 +63,9 @@ const loginCaptain = async (req, res) => {
 
 const captainProfile = async (req, res) => {
     try {
-        const user = req.user;
-        const captain = await Captain.findById(user._id).select('-password');
-        res.status(200).json(captain);
+        const captain = req.captain;
+        const captainData = await Captain.findById(captain._id).select('-password');
+        res.status(200).json(captainData);
     } catch (error) {
         res.status(401).json({
             message: 'Error ' + error.message
