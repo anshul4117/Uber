@@ -6,12 +6,10 @@ const captainSchema = new mongoose.Schema({
     fullName: {
         firstName: {
             type: String,
-            required: true,
-            minLength: [3, "firstNAme must be at least 3 characters long"]
+            required: true
         },
         lastName: {
             type: String,
-            required: true,
             minLength: [3, "lastName must be at least 3 characters long"]
         }
     },
@@ -64,7 +62,7 @@ const captainSchema = new mongoose.Schema({
     }
 });
 
-userSchema.methods.generateToken = async function () {
+captainSchema.methods.generateToken = async function () {
     try {
         const payload = {
             _id: this._id
@@ -76,7 +74,7 @@ userSchema.methods.generateToken = async function () {
     }
 };
 
-userSchema.pre('save', async function (next) {
+captainSchema.pre('save', async function (next) {
     const user = this;
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 10);
@@ -85,7 +83,7 @@ userSchema.pre('save', async function (next) {
         next();
 });
 
-userSchema.methods.comparePassword = async function (password) {
+captainSchema.methods.comparePassword = async function (password) {
     return await bcrypt.compare(password, this.password)
 };
 

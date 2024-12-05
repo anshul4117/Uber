@@ -9,11 +9,11 @@ const registerUser = async (req, res) => {
 
         validateRegisterData(req);
         // check the user already register or not
-        const existingUser = await userService.getUserByEmail(email);
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
             throw new Error('Email already exists');
         }
-
+        
 
         const user = await userService.createUser({
             fullName,
