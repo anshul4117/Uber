@@ -5,15 +5,25 @@ const UserSignUp = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [userData, setUserData] = useState('');
+  
 
 
   const submitHandler = (e) => {
     e.preventDefault();
     setUserData({
+      fullName: {
+        firstName: firstName,
+        lastName: lastName
+      },
       email: email,
       password: password
-    })
+    });
+    console.log(userData)
+    setFirstName('');
+    setLastName('');
     setEmail('');
     setPassword('');
   }
@@ -30,12 +40,20 @@ const UserSignUp = () => {
             <div className='flex gap-4 mb-5'>
               <input
                 required
+                value={firstName}
+                onChange={(e) => {
+                  setFirstName(e.target.value)
+                }}
                 className='bg-[#eeeeee] w-1/2 rounderd px-4 py-2 border text-lg placeholder:text-base'
                 type="text"
                 placeholder='first name'
               />
               <input
                 required
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value)
+                }}
                 className='bg-[#eeeeee] w-1/2 rounderd px-4 py-2 border text-lg placeholder:text-base'
                 type="text"
                 placeholder='last name'
@@ -70,9 +88,9 @@ const UserSignUp = () => {
           <p className='text-center '>User already have Account? <Link to='/login' className='text-blue-600'>Login Here</Link></p>
         </div>
         <div>
-          <p className='flex justify-center text-[13px] leading-tight'>
-            By proceeding, you consent to get calls, whatsApp or SMS messages, including by automated means,
-            from Uber and affiliates to the number provided.
+        <p className='text-[13px] leading-tight'>
+            This site is protected bt reCEPTCHA and the <span className='underline'>Google Privacy Policy</span>
+            and <span className='underline'> Terms of Service apply</span>
           </p>
         </div>
       </div>
