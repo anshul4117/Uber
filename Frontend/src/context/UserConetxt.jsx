@@ -12,7 +12,7 @@ const UserConetxt = ({ children }) => {
         password: ''
     });
     return (
-        <UserDataContext.Provider value={user}>
+        <UserDataContext.Provider value={{ user, setUser }}>
             <div>{children}</div>
         </UserDataContext.Provider>
     )

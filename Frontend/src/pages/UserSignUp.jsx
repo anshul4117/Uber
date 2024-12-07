@@ -1,19 +1,22 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { UserDataContext } from '../context/UserConetxt';
+import axios from 'axios';
 
 const UserSignUp = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [userData, setUserData] = useState('');
-  
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const navigate = useNavigate();
+
+  const { user, setUser } = useContext(UserDataContext);
 
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setUserData({
+    const newUser = ({
       fullName: {
         firstName: firstName,
         lastName: lastName
@@ -21,7 +24,16 @@ const UserSignUp = () => {
       email: email,
       password: password
     });
-    console.log(userData)
+
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`,
+      newUser
+    );
+    if (response.status === 201) {
+      setUser(response.data);
+      localStorage.setItem('token', response.data.token)
+      navigate('/home');
+    }
+
     setFirstName('');
     setLastName('');
     setEmail('');
@@ -88,7 +100,7 @@ const UserSignUp = () => {
           <p className='text-center '>User already have Account? <Link to='/login' className='text-blue-600'>Login Here</Link></p>
         </div>
         <div>
-        <p className='text-[13px] leading-tight'>
+          <p className='text-[13px] leading-tight'>
             This site is protected bt reCEPTCHA and the <span className='underline'>Google Privacy Policy</span>
             and <span className='underline'> Terms of Service apply</span>
           </p>

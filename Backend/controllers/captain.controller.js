@@ -49,7 +49,7 @@ const loginCaptain = async (req, res) => {
 
         // set token in cookie
         res.cookie('token', token)
-            .status(200).
+            .status(201).
             json({ captain, token });
 
 
@@ -65,7 +65,7 @@ const captainProfile = async (req, res) => {
     try {
         const captain = req.captain;
         const captainData = await Captain.findById(captain._id).select('-password');
-        res.status(200).json(captainData);
+        res.status(201).json(captainData);
     } catch (error) {
         res.status(401).json({
             message: 'Error ' + error.message

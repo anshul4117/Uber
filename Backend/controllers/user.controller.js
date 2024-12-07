@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
         res.cookie("token",
             token,
         )
-        res.status(200).json({
+        res.status(201).json({
             message: 'User logged in successfully',
             user,
             token
@@ -80,7 +80,7 @@ const logoutUser = async (req, res) => {
         res.clearCookie('token');
         const token = req.cookies.token || req.header('Authorization')?.replace('Bearer ', '');
         await blackList.create({ token });
-        res.status(200).json({
+        res.status(201).json({
             message: 'User logged out successfully',
         })
     } catch (error) {
